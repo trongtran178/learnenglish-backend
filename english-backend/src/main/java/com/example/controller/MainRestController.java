@@ -53,5 +53,13 @@ public class MainRestController {
 	}
 	
 	
+	@RequestMapping(value = "/vocabulariesChallenge", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	public List<Vocabulary> getVocabulariesToChallenge() {
+		return vocabularyDAO.getRandomVocabulary();
+	}
+	
+	
+	
 
 }

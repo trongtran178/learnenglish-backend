@@ -1,20 +1,23 @@
 package com.example.model;
 
 public class Vocabulary {
-	
+
 	private int ID;
 	private int lessonID;
 	private String word;
 	private String translate;
+	private String image;
 	private String sound;
 	private String pronunciation;
 
-	public Vocabulary(int ID, int lessonID, String word, String translate, String sound, String pronunciation) {
+	public Vocabulary(int ID, int lessonID, String word, String translate, String image, String sound,
+			String pronunciation) {
 		super();
 		this.ID = ID;
 		this.lessonID = lessonID;
 		this.word = word;
 		this.translate = translate;
+		this.image = image;
 		this.sound = sound;
 		this.pronunciation = pronunciation;
 	}
@@ -65,6 +68,14 @@ public class Vocabulary {
 
 	public void setPronunciation(String pronunciation) {
 		this.pronunciation = pronunciation;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
