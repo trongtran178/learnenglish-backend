@@ -10,18 +10,6 @@ public class Vocabulary {
 	private String sound;
 	private String pronunciation;
 
-	public Vocabulary(int ID, int lessonID, String word, String translate, String image, String sound,
-			String pronunciation) {
-		super();
-		this.ID = ID;
-		this.lessonID = lessonID;
-		this.word = word;
-		this.translate = translate;
-		this.image = image;
-		this.sound = sound;
-		this.pronunciation = pronunciation;
-	}
-
 	public int getID() {
 		return ID;
 	}
@@ -54,6 +42,14 @@ public class Vocabulary {
 		this.translate = translate;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String getSound() {
 		return sound;
 	}
@@ -70,12 +66,20 @@ public class Vocabulary {
 		this.pronunciation = pronunciation;
 	}
 
-	public String getImage() {
-		return image;
+	public Vocabulary(int iD, int lessonID, String word, String translate, String image, String sound,
+			String pronunciation) {
+		super();
+		ID = iD;
+		this.lessonID = lessonID;
+		this.word = word;
+		this.translate = translate;
+		this.image = image;
+		this.sound = sound;
+		this.pronunciation = pronunciation;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public Vocabulary() {
+		super();
 	}
 
 }
