@@ -30,13 +30,13 @@ public class MainRestController {
 
 	@Autowired
 	private LessonDAO lessonDAO;
-
-	@Autowired
+	
+	@Autowired 
 	private VocabularyDAO vocabularyDAO;
-
+	
 	@Autowired
 	private UserDAO userDAO;
-
+	
 	@RequestMapping("/")
 	@ResponseBody
 	public String welcome() {
@@ -52,14 +52,16 @@ public class MainRestController {
 		List<Lesson> list = lessonDAO.getLessons();
 		return list;
 	}
-
+	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value = "/vocabularies/{lessonID}", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(value="/vocabularies/{lessonID}",
+					method=RequestMethod.GET,
+					produces = { "application/json" })
 	@ResponseBody
 	public List<Vocabulary> getVocabularyInLesson(@PathVariable("lessonID") int lessonID) {
 		return vocabularyDAO.getVocabulariesInLesson(lessonID);
 	}
-
+	
 	@PostMapping("/login/checklogin")
 	@ResponseBody
 	public boolean checkLogin(@RequestBody User user, HttpSession session) {
@@ -70,11 +72,5 @@ public class MainRestController {
 		kt = userDAO.checkUserLogin(uname, pword);
 		return kt;
 	}
-
-	@RequestMapping(value = "/vocabulariesChallenge", method = RequestMethod.GET, produces = { "application/json" })
-	@ResponseBody
-	public List<Vocabulary> getVocabulariesToChallenge() {
-		return vocabularyDAO.getRandomVocabulary();
-	}
-
+	
 }
