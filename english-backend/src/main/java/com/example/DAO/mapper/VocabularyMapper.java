@@ -9,7 +9,7 @@ import com.example.model.Vocabulary;
 
 public class VocabularyMapper implements RowMapper<Vocabulary> {
 
-	public static final String BASE_SQL = "SELECT VOCABULARY.ID, VOCABULARY.lessonID, VOCABULARY.word, VOCABULARY.translate,VOCABULARY.image, VOCABULARY.sound, VOCABULARY.pronunciation from Vocabulary VOCABULARY ";
+	public static final String BASE_SQL = "SELECT VOCABULARY.ID, VOCABULARY.lessonID, VOCABULARY.word, VOCABULARY.translate, VOCABULARY.image, VOCABULARY.sound, VOCABULARY.pronunciation from Vocabulary VOCABULARY ";
 
 	@Override
 	public Vocabulary mapRow(ResultSet rs, int rowNum) throws SQLException {

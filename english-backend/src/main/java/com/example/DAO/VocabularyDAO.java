@@ -16,22 +16,35 @@ import com.example.model.Vocabulary;
 @Repository
 @Transactional
 public class VocabularyDAO extends JdbcDaoSupport {
-	
+
 	@Autowired
 	public VocabularyDAO(DataSource dataSource) {
 		this.setDataSource(dataSource);
 	}
-	
+
 	public List<Vocabulary> getVocabulariesInLesson(int LessonID) {
 		String sql = VocabularyMapper.BASE_SQL + " where VOCABULARY.lessonID = ? ";
-		Object[] params = new Object[] { LessonID};
-		try { 
+		Object[] params = new Object[] { LessonID };
+		try {
 			VocabularyMapper vocabularyMapper = new VocabularyMapper();
 			List<Vocabulary> listVocabulary = this.getJdbcTemplate().query(sql, params, vocabularyMapper);
 			return listVocabulary;
-		} catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
-	
+
+	public List<Vocabulary> getRandomVocabulary() {
+		String sql = "select * from vocabulary order by rand() limit 20";
+		Object[] params = new Object[] {};
+		try {
+			VocabularyMapper vocabularyMapper = new VocabularyMapper();
+			List<Vocabulary> listVocabulary = this.getJdbcTemplate().query(sql, params, vocabularyMapper);
+			return listVocabulary;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
 }
