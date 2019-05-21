@@ -29,8 +29,9 @@ public class UserDAO extends JdbcDaoSupport{
 		return listUser;
 	}
 	
-	public boolean checkUserLogin(String username, String password) {
-		boolean check = false;
+	//if check is true, return ID User
+	public int checkUserLogin(String username, String password) {
+		int check = -1;
 		
 		String sql = UserMapper.BASE_SQL;
 		Object[] params = new Object[] {};
@@ -38,10 +39,11 @@ public class UserDAO extends JdbcDaoSupport{
 		List<User> listUser = this.getJdbcTemplate().query(sql, params, userMapper);
 		if(listUser != null) {
 			for(int i = 0; i < listUser.size(); i++) {
+				int userID = listUser.get(i).getID();
 				String uname = listUser.get(i).getUserName();
 				String pword = listUser.get(i).getPassWord();
 				if(uname.equals(username) && pword.equals(password)) {
-					check = true;
+					check = userID;
 					return check;
 				}
 			}
