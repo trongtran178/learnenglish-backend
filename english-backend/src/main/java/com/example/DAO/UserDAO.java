@@ -10,11 +10,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.DAO.mapper.UserMapper;
+import com.example.DAO.mapper.VocabularyMapper;
 import com.example.model.User;
+import com.example.model.Vocabulary;
 
 @Repository
 @Transactional
 public class UserDAO extends JdbcDaoSupport{
+
+	
 	@Autowired
 	public UserDAO(DataSource dataSource) {
 		this.setDataSource(dataSource);
@@ -47,5 +51,17 @@ public class UserDAO extends JdbcDaoSupport{
 			}
 		}
 		return check;
+	}
+	
+	public List<Vocabulary> getListVocabularyUSer(String username){
+		String sql = "select vocabulary_id as ID, lessonID, word, translate, image, sound, pronunciation  from user_vocabulary, vocabulary, users\r\n" + 
+				"where user_vocabulary.vocabulary_id = vocabulary.ID\r\n" + 
+				"and user_vocabulary.user_id = users.ID\r\n" + 
+				"and users.username = '" +username+ "'";
+		VocabularyMapper vocabularyMapper = new VocabularyMapper();
+		Object[] params = new Object[] {};
+		List<Vocabulary> listVocabulary = this.getJdbcTemplate().query(sql, params, vocabularyMapper);
+		
+		return listVocabulary;
 	}
 }
