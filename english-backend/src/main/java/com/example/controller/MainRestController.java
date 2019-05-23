@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.DAO.LessonDAO;
 import com.example.DAO.UserDAO;
+import com.example.DAO.UserVocabularyDAOImpl;
 import com.example.DAO.VocabularyDAO;
 import com.example.model.Lesson;
 import com.example.model.User;
@@ -36,6 +38,9 @@ public class MainRestController {
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private UserVocabularyDAOImpl userVocabularyDAO;
 	
 	@RequestMapping("/")
 	@ResponseBody
@@ -80,7 +85,74 @@ public class MainRestController {
 		return vocabularyDAO.getRandomVocabulary();
 	}
 	
+	@RequestMapping(value = "/vocabularies", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	public List<Vocabulary> getUserVocabulary(String username,int lessonId, String keyWord){
+		keyWord = keyWord.toLowerCase();
+		List<Vocabulary> listVocabulary = userDAO.getListVocabularyUSer(username);
+		List<Vocabulary> list = new ArrayList<>();
+		if(lessonId==0 && keyWord == "") {
+			return userDAO.getListVocabularyUSer("user");
+		}
+		else {
+			if(lessonId == 0 && keyWord != "") {
+				for(int i = 0; i < listVocabulary.size(); i++) {
+					if(listVocabulary.get(i).getWord().toLowerCase().contains(keyWord) || listVocabulary.get(i).getTranslate().toLowerCase().contains(keyWord)) {
+						list.add(listVocabulary.get(i));
+					}
+				}
+			}
+			else {
+				if(lessonId != 0 && keyWord == "") {
+					for(int i = 0; i < listVocabulary.size(); i++) {
+						if(listVocabulary.get(i).getLessonID() == lessonId) {
+							list.add(listVocabulary.get(i));
+						}
+					}
+				}
+				else {
+					for(int i = 0; i < listVocabulary.size(); i++) {
+						if(listVocabulary.get(i).getLessonID() == lessonId) {
+							if(listVocabulary.get(i).getWord().toLowerCase().contains(keyWord)||listVocabulary.get(i).getTranslate().toLowerCase().contains(keyWord)){
+								list.add(listVocabulary.get(i));
+							}
+						}
+					}
+				}
+			}
+		}
+		return list;
+	}
 	
+	@RequestMapping(value = "/deleteUserVocabulary", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	public List<Vocabulary> deleteUserVocabulary(String username, int vocabularyId) {		
+		int userId = 0;
+		List<User> lUser = userDAO.getUser();
+		for(int i = 0; i < lUser.size(); i++) {
+			if(lUser.get(i).getUserName().equals(username)) {
+				userId = lUser.get(i).getID();
+				break;
+			}
+		}
+		userVocabularyDAO.deleteVocabulary(userId, vocabularyId);
+		List<Vocabulary> lv = userDAO.getListVocabularyUSer(username);
+		return lv;
+	}
 	
-	
+	@RequestMapping(value = "/addUserVocabulary", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	public List<Vocabulary> addUserVocabulary(String username, int vocabularyId) {		
+		int userId = 0;
+		List<User> lUser = userDAO.getUser();
+		for(int i = 0; i < lUser.size(); i++) {
+			if(lUser.get(i).getUserName().equals(username)) {
+				userId = lUser.get(i).getID();
+				break;
+			}
+		}
+		userVocabularyDAO.addVocabulary(userId, vocabularyId);
+		List<Vocabulary> lv = userDAO.getListVocabularyUSer(username);
+		return lv;
+	}
 }
